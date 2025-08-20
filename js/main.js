@@ -1,38 +1,46 @@
 let precioLista = 199990;
 const descCampaing = 0.40;
 const descPrimeraCompra = 0.10;
-
 let carrito = [];
 
-function MailIngresado() {
-  let ingreso;
-
-  ingreso = prompt("Ingresa tu mail para obtener un descuento adicional, o escribe 'salir'");
-      // Si cancela o escribe 'salir' es solo 40%
-
-    if (ingreso === "salir")  {
-        let precioConDescuentoBase = (precioLista * (1 - descCampaing));
-        console.log("Carrito sin mails:", carrito);
-        alert("No ingresaste e-mail. No se aplicará el 10% extra." + 
-        "Total a pagar: $" + Math.round(precioConDescuentoBase)
-      );
-     
-    } else if (ingreso) {
-     
-      let email = ingreso.trim().toLowerCase();
-      carrito.push(email);
-      console.log("Tienes un 10% adicional en tu compra");
-    // Si agrega mail Aplica 40% + 10% adicional
-    let precioConDescuentoBase = precioLista * (1 - descCampaing);
-    let precioFinal = precioConDescuentoBase * (1 - descPrimeraCompra);
-
-    console.log("Carrito con mails:", carrito);
-    alert(
-      "Tienes un 40% de campaña + 10% adicional por primera compra.\n" +
-      "Total a pagar: $" + Math.round(precioFinal)
-    );
-
-    }
-
+//pedir mail
+function pedirMail() {
+  const entrada = prompt("Ingresa tu mail para obtener un 10% adicional, o escribe 'salir' (Cancelar = salir)");
+  if (entrada === null) return null;                 // canceló
+  const email = entrada.trim().toLowerCase();
+  if (email === "" || email === "salir") return null; // vacío o 'salir'
+  return email;                                       // devuelve el mail normalizado
 }
-MailIngresado();
+
+// calcula precio
+function calcularPrecio(precioBase, aplicaExtra) {
+  let precioCon40 = Math.round(precioBase * (1 - descCampaing));
+  let total = precioCon40;
+  if (aplicaExtra) {
+    total = Math.round(precioCon40 * (1 - descPrimeraCompra));
+  }
+  return { precioCon40, total };
+}
+
+function ejecutar() {
+
+  let email = pedirMail();
+  let aplicaExtra = !!email;
+
+if (aplicaExtra) {
+  carrito.push(email);
+  console.log("Tienes un 10% adicional por primera compra");
+} else {
+  console.log("No ingresaste e-mail. No se aplicará el 10% extra.");
+}
+
+const { precioCon40, total } = calcularPrecio(precioLista, aplicaExtra);
+
+console.log("Precio lista:", precioLista);
+console.log("Total con descuentos:", total);
+alert("TOTAL A PAGAR: $" + total);
+}
+
+
+// Ejecutar
+ejecutar();
