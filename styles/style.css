@@ -1,4 +1,12 @@
-body { background-color: #f8f9fa; }
-.phone-img { aspect-ratio: 2 / 4; object-fit: cover; }
-header { background-color: #ccc; padding: 10px 20px; }
-header img { height: 40px; }
+body { 
+    background-color: #f8f9fa; 
+}
+.phone-img { 
+    aspect-ratio: 2 / 4; 
+    object-fit: cover;
+ }
+header {
+     background-color: #ccc; 
+     padding: 10px 20px; 
+    }
+
