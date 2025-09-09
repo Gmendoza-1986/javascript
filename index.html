@@ -17,7 +17,7 @@
     <!-- Buscador + Filtro -->
     <div class="row g-3 align-items-center mb-4">
       <div class="col-md-8">
-        <input type="text" class="form-control" placeholder="Buscar celular..." aria-label="Buscar celular" />
+      <input type="text" class="form-control" id="buscador" placeholder="Buscar celular..." aria-label="Buscar celular" />
       </div>
         <!-- Modal de email -->
   <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
@@ -36,7 +36,7 @@
     </div>
   </div>
       <div class="col-md-4">
-        <select class="form-select" aria-label="Filtro de sistema operativo">
+        <select id="filtroSO" class="form-select" aria-label="Filtro de sistema operativo">
           <option selected value="all">Todos</option>
           <option value="android">Android</option>
           <option value="ios">iOS</option>
