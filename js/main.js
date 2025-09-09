@@ -1,17 +1,36 @@
-let precioLista = 199990;
+
 const descCampaing = 0.40;
 const descPrimeraCompra = 0.10;
 let carrito = [];
 
-//pedir mail
-function pedirMail() {
-  const entrada = prompt("Ingresa tu mail para obtener un 10% adicional, o escribe 'salir' (Cancelar = salir)");
-  if (entrada === null) return null;                 // canceló
-  const email = entrada.trim().toLowerCase();
-  if (email === "" || email === "salir") return null; // vacío o 'salir'
-  return email;                                       // devuelve el mail normalizado
-}
+//pedir mail y guardar
+function guardarEmailDesdeInput() {
+  const input = document.querySelector('.mail');
+  if (!input) return null;              // no existe el input
 
+  const entrada = input.value;
+  if (entrada === null) return null;    // entrada es null
+
+  const email = entrada.trim().toLowerCase();               
+  localStorage.setItem('email', email);
+  return email;
+}
+const celulares=[
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"Android", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"IOS", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"IOS", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"IOS", precioLista:}
+  {id:, nombre:"S25",marca:"Samsung", sistema:"IOS", precioLista:}
+
+
+]
 // calcula precio
 function calcularPrecio(precioBase, aplicaExtra) {
   let precioCon40 = Math.round(precioBase * (1 - descCampaing));
@@ -21,10 +40,25 @@ function calcularPrecio(precioBase, aplicaExtra) {
   }
   return { precioCon40, total };
 }
-
+//promocion samsung
+function aplicarPromoSamsung(productos) {
+  return productos.map(p => {
+    if (p.marca === "Samsung") {
+      return {
+        ...p,
+        promocion: precioCon40(p.precioBase) 
+      };
+    } else {
+      return {
+        ...p,
+        promocion: null 
+      };
+    }
+  });
+}
 function ejecutar() {
 
-  let email = pedirMail();
+  let email = guardarEmailDesdeInput();
   let aplicaExtra = !!email;
 
 if (aplicaExtra) {
