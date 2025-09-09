@@ -5,7 +5,7 @@ const descPrimeraCompra = 0.10;
 // Carrito de correos
 let carrito = [];
 
-// ---- 1) Guardar mail desde input .mail ----
+//  Guardar mail desde input .mail ----
 function guardarEmailDesdeInput() {
   const input = document.querySelector('.mail');
   if (!input) return null;
@@ -18,7 +18,7 @@ function guardarEmailDesdeInput() {
   return email;
 }
 
-// ---- 2) Datos de productos (mismo orden que las cards del HTML) ----
+// Productos
 const celulares = [
   { id: 1,  nombre: "Galaxy A16",        marca: "Samsung",  sistema: "Android", precioLista: 159990 },
   { id: 2,  nombre: "Galaxy A56",        marca: "Samsung",  sistema: "Android", precioLista: 329990 },
@@ -34,7 +34,7 @@ const celulares = [
   { id: 12, nombre: "iPhone 16 Pro Max", marca: "Apple",    sistema: "iOS",     precioLista: 1457800 }
 ];
 
-// ---- 3) Helpers de precio ----
+// Promo de precio ----
 function precioCon40(precio) {
   return Math.round(precio * (1 - descCampaing));
 }
@@ -45,7 +45,7 @@ function calcularPrecio(precioBase, aplicaExtra) {
   return { precioCon40: con40, total };
 }
 
-// ---- 4) Pintar precios en las cards (precio lista + total) ----
+//  Precios en las cards (precio lista + total) ----
 function pintarPrecios(aplicaExtra) {
   const preciosLista = document.querySelectorAll(".precioLista");
   const preciosFinales = document.querySelectorAll(".precioFinal");
@@ -62,7 +62,7 @@ function pintarPrecios(aplicaExtra) {
   });
 }
 
-// ---- 5) Filtros combinados (buscador + sistema operativo) ----
+//Filtros  (buscador + sistema operativo)
 function aplicaTexto(producto, texto) {
   if (!texto) return true;
   const t = texto.toLowerCase();
@@ -76,10 +76,7 @@ function aplicaSO(producto, so) {
   return producto.sistema.toLowerCase() === so;
 }
 
-/**
- * Muestra/oculta cards según filtros.
- * - Mantiene el orden estático de las cards y los datos (índice i).
- */
+
 function aplicarFiltros() {
   const texto = (document.getElementById("buscador")?.value || "").trim();
   const so = (document.getElementById("filtroSO")?.value || "all").toLowerCase();
@@ -91,20 +88,20 @@ function aplicarFiltros() {
   });
 }
 
-// ---- 6) Inicialización ----
+// ejecutar
 function ejecutar() {
   const email = guardarEmailDesdeInput();
   const aplicaExtra = !!email;
   if (aplicaExtra) carrito.push(email);
 
   pintarPrecios(aplicaExtra);
-  aplicarFiltros(); // aplica filtros iniciales (muestra todo)
+  aplicarFiltros(); 
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   ejecutar();
 
-  // Listeners de filtros
+  // filtros
   const buscador = document.getElementById("buscador");
   const filtroSO = document.getElementById("filtroSO");
 
@@ -115,11 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
     filtroSO.addEventListener("change", aplicarFiltros);
   }
 
-  // Extra: si cierras el modal después de escribir el email, recalcula precios
+  // recalcula precios
   const emailInput = document.querySelector(".mail");
   if (emailInput) {
     emailInput.addEventListener("change", () => {
-      // Guardamos y repintamos con 10% extra
+      // Guardamos
       guardarEmailDesdeInput();
       pintarPrecios(true);
     });
