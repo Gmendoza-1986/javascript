@@ -1,0 +1,97 @@
+[
+  { 
+    "id": 1,  
+    "nombre": "Galaxy A16",        
+    "marca": "Samsung",  
+    "sistema": "Android", 
+    "precioLista": 159990, 
+    "image": "./img/samsung_A16.webp" 
+  },
+  { 
+    "id": 2,  
+    "nombre": "Galaxy A56",        
+    "marca": "Samsung",  
+    "sistema": "Android", 
+    "precioLista": 329990, 
+    "image": "./img/samsung_galaxy_a56.png" 
+  },
+  { 
+    "id": 3,  
+    "nombre": "Galaxy S25",       
+    "marca": "Samsung",  
+    "sistema": "Android", 
+    "precioLista": 259990, 
+    "image": "./img/samsung-galaxy-s25.webp" 
+  },
+  { 
+    "id": 4,  
+    "nombre": "Galaxy S24 FE",     
+    "marca": "Samsung",  
+    "sistema": "Android", 
+    "precioLista": 799990, 
+    "image": "./img/samsung_galaxy_s24fe.webp"
+  },
+  { 
+    "id": 5,  
+    "nombre": "Monophone",         
+    "marca": "Motorola", 
+    "sistema": "Android", 
+    "precioLista": 139990, 
+    "image": "./img/motorola_monophone.webp"
+  },
+  { 
+    "id": 6,  
+    "nombre": "Moto G04s",         
+    "marca": "Motorola", 
+    "sistema": "Android", 
+    "precioLista": 104990, 
+    "image": "./img/motog_O4S.jpg"
+  },
+  { 
+    "id": 7,  
+    "nombre": "Xiaomi 15",         
+    "marca": "Xiaomi",   
+    "sistema": "Android", 
+    "precioLista": 3489900, 
+    "image": "./img/xiaomi_15.webp"
+  },
+  { 
+    "id": 8,  
+    "nombre": "iPhone 13",         
+    "marca": "Apple",    
+    "sistema": "iOS",     
+    "precioLista": 549990, 
+    "image": "./img/iphone.webp"
+  },
+  { 
+    "id": 9,  
+    "nombre": "iPhone 13 mini",    
+    "marca": "Apple",    
+    "sistema": "iOS",     
+    "precioLista": 499990, 
+    "image": "./img/apple-iphone-13-mini.png"
+  },
+  { 
+    "id": 10, 
+    "nombre": "iPhone 15",         
+    "marca": "Apple",    
+    "sistema": "iOS",     
+    "precioLista": 899990, 
+    "image": "./img/iphone-15-azul-ambas-caras.webp"
+  },
+  { 
+    "id": 11, 
+    "nombre": "iPhone 16 Pro",     
+    "marca": "Apple",    
+    "sistema": "iOS",     
+    "precioLista": 1229990, 
+    "image": "./img/iphone_16.webp"
+  },
+  { 
+    "id": 12, 
+    "nombre": "iPhone 16 Pro Max", 
+    "marca": "Apple",    
+    "sistema": "iOS",     
+    "precioLista": 1457800, 
+    "image": "./img/iphone_13.jpg"}
+]

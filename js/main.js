@@ -1,11 +1,11 @@
-// Descuentos
+
 const descCampaing = 0.40;
 const descPrimeraCompra = 0.10;
 
-// Carrito de correos
 let carrito = [];
+let celulares = []; 
 
-//  Guardar mail desde input .mail ----
+// mail
 function guardarEmailDesdeInput() {
   const input = document.querySelector('.mail');
   if (!input) return null;
@@ -18,43 +18,81 @@ function guardarEmailDesdeInput() {
   return email;
 }
 
-// Productos
-const celulares = [
-  { id: 1,  nombre: "Galaxy A16",        marca: "Samsung",  sistema: "Android", precioLista: 159990 },
-  { id: 2,  nombre: "Galaxy A56",        marca: "Samsung",  sistema: "Android", precioLista: 329990 },
-  { id: 3,  nombre: "Galaxy XS25",       marca: "Samsung",  sistema: "Android", precioLista: 259990 },
-  { id: 4,  nombre: "Galaxy S24 FE",     marca: "Samsung",  sistema: "Android", precioLista: 799990 },
-  { id: 5,  nombre: "Monophone",         marca: "Motorola", sistema: "Android", precioLista: 139990 },
-  { id: 6,  nombre: "Moto G04s",         marca: "Motorola", sistema: "Android", precioLista: 104990 },
-  { id: 7,  nombre: "Xiaomi 15",         marca: "Xiaomi",   sistema: "Android", precioLista: 3489900 },
-  { id: 8,  nombre: "iPhone 13",         marca: "Apple",    sistema: "iOS",     precioLista: 549990 },
-  { id: 9,  nombre: "iPhone 13 mini",    marca: "Apple",    sistema: "iOS",     precioLista: 499990 },
-  { id: 10, nombre: "iPhone 15",         marca: "Apple",    sistema: "iOS",     precioLista: 899990 },
-  { id: 11, nombre: "iPhone 16 Pro",     marca: "Apple",    sistema: "iOS",     precioLista: 1229990 },
-  { id: 12, nombre: "iPhone 16 Pro Max", marca: "Apple",    sistema: "iOS",     precioLista: 1457800 }
-];
-
-// Promo de precio ----
 function precioCon40(precio) {
   return Math.round(precio * (1 - descCampaing));
 }
 
 function calcularPrecio(precioBase, aplicaExtra) {
-  const con40 = precioCon40(precioBase);
+  const con40 = precioCon40(Number(precioBase) || 0);
   const total = aplicaExtra ? Math.round(con40 * (1 - descPrimeraCompra)) : con40;
   return { precioCon40: con40, total };
 }
 
-//  Precios en las cards (precio lista + total) ----
+function aplicaTexto(producto, texto) {
+  if (!texto) return true;
+  const t = texto.toLowerCase();
+  return [producto.nombre, producto.marca].some(prop =>
+    String(prop ?? "").toLowerCase().includes(t)
+  );
+}
+
+function aplicaSO(producto, so) {
+  const sys = String(producto.sistema ?? "").toLowerCase();
+  if (!so || so === "all") return true;
+  return sys === so;
+}
+
+// Datos
+async function cargarCelulares() {
+  try {
+    const resp = await fetch('./js/productos.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    celulares = Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error('Error cargando productos:', err);
+    celulares = [];
+  }
+}
+
+// Cargar celulares
+function renderBoxes(items = celulares) {
+  const principalBox = document.querySelector("#boxesContainer");
+  if (!principalBox) return;
+
+  let boxesContent = '';
+  items.forEach((producto) => {
+    boxesContent += `
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img src="${producto.image ?? 'https://via.placeholder.com/600x400?text=Celular'}"
+               class="card-img-top phone-img"
+               alt="Celular ${producto.nombre ?? ''}">
+          <div class="card-body">
+            <h5 class="card-title">${producto.nombre ?? 'Sin nombre'}</h5>
+            <p class="card-text small text-muted">${producto.marca ?? ''}</p>
+            <p class="precioLista"></p>
+            <p class="precioFinal fw-bold"></p>
+            <a href="#" class="btn btn-primary w-100">Ver Detalles</a>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  principalBox.innerHTML = boxesContent;
+}
+
 function pintarPrecios(aplicaExtra) {
-  const preciosLista = document.querySelectorAll(".precioLista");
-  const preciosFinales = document.querySelectorAll(".precioFinal");
+  const preciosLista = document.querySelectorAll("#boxesContainer .precioLista");
+  const preciosFinales = document.querySelectorAll("#boxesContainer .precioFinal");
 
   celulares.slice(0, preciosFinales.length).forEach((producto, i) => {
-    const { total } = calcularPrecio(producto.precioLista, aplicaExtra);
+    const lista = Number(producto.precioLista) || 0;
+    const { total } = calcularPrecio(lista, aplicaExtra);
 
     if (preciosLista[i]) {
-      preciosLista[i].textContent = "Precio lista: $" + producto.precioLista.toLocaleString("es-CL");
+      preciosLista[i].textContent = "Precio lista: $" + lista.toLocaleString("es-CL");
     }
     if (preciosFinales[i]) {
       preciosFinales[i].textContent = "TOTAL: $" + total.toLocaleString("es-CL");
@@ -62,63 +100,53 @@ function pintarPrecios(aplicaExtra) {
   });
 }
 
-//Filtros  (buscador + sistema operativo)
-function aplicaTexto(producto, texto) {
-  if (!texto) return true;
-  const t = texto.toLowerCase();
-  return [producto.nombre, producto.marca, producto.sistema].some(prop =>
-    String(prop).toLowerCase().includes(t)
-  );
-}
-
-function aplicaSO(producto, so) {
-  if (!so || so === "all") return true;
-  return producto.sistema.toLowerCase() === so;
-}
-
-
+// Filtros
 function aplicarFiltros() {
-  const texto = (document.getElementById("buscador")?.value || "").trim();
-  const so = (document.getElementById("filtroSO")?.value || "all").toLowerCase();
+  const buscador = document.getElementById("buscador");
+  const filtroSO = document.getElementById("filtroSO");
+  const texto = buscador?.value ?? "";
+  const so = (filtroSO?.value ?? "all").toLowerCase();
 
-  const cards = document.querySelectorAll(".row.row-cols-1 .col"); // cada card
+  const cards = document.querySelectorAll("#boxesContainer .col");
+
   celulares.forEach((producto, i) => {
     const visible = aplicaTexto(producto, texto) && aplicaSO(producto, so);
     if (cards[i]) cards[i].style.display = visible ? "" : "none";
   });
 }
 
-// ejecutar
+// 
 function ejecutar() {
   const email = guardarEmailDesdeInput();
   const aplicaExtra = !!email;
   if (aplicaExtra) carrito.push(email);
 
-  pintarPrecios(aplicaExtra);
-  aplicarFiltros(); 
+  pintarPrecios(aplicaExtra); 
+  aplicarFiltros();          
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// Inicio
+document.addEventListener("DOMContentLoaded", async () => {
+  // datos
+  await cargarCelulares();
+
+  // render html
+  renderBoxes();
+
+  // precios
   ejecutar();
 
-  // filtros
+  
   const buscador = document.getElementById("buscador");
   const filtroSO = document.getElementById("filtroSO");
+  if (buscador) buscador.addEventListener("input", aplicarFiltros);
+  if (filtroSO) filtroSO.addEventListener("change", aplicarFiltros);
 
-  if (buscador) {
-    buscador.addEventListener("input", aplicarFiltros);
-  }
-  if (filtroSO) {
-    filtroSO.addEventListener("change", aplicarFiltros);
-  }
-
-  // recalcula precios
   const emailInput = document.querySelector(".mail");
   if (emailInput) {
     emailInput.addEventListener("change", () => {
-      // Guardamos
       guardarEmailDesdeInput();
-      pintarPrecios(true);
+      pintarPrecios(true); 
     });
   }
 });

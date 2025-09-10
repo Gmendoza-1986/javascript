@@ -10,3 +10,10 @@ header {
      padding: 10px 20px; 
     }
 
+.card.h-100.shadow-sm .card-img, .card-img-bottom, .card-img-top {
+    max-height: 214px;
+    width: max-content;
+    display: block;
+    margin: auto;
+
+}
